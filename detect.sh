@@ -19,7 +19,7 @@ if [ "$(git tag --contains $current_commit)" = "" ]; then
         -H "Accept: application/vnd.github.v3+json" \
         -H "Authorization: token $TOKEN" \
         -d '{"ref": "main"}' \
-        "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/workflows/your_workflow_dispatch_name/dispatches")
+        "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/workflows/roll_back_trigger/dispatches")
 
     if [ "$(echo "$response" | jq -r '.message')" = "Bad credentials" ]; then
         echo "Error: Bad credentials. Please ensure that your GitHub token is valid."
