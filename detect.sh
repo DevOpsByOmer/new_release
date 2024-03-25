@@ -17,7 +17,7 @@ if [ "$(git tag --contains $current_commit)" = "" ]; then
     # Trigger GitHub Actions workflow
     response=$(curl -X POST \
         -H "Accept: application/vnd.github.v3+json" \
-        -H "Authorization: token $github_token" \
+        -H "Authorization: token $TOKEN" \
         -d '{"ref": "main"}' \
         "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/workflows/your_workflow_dispatch_name/dispatches")
 
