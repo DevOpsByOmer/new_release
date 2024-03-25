@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'tag3'
+  workflow_dispatch:
 
 jobs:
   create_release:
