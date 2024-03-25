@@ -1,26 +1,28 @@
-name: Deploy Files
+name: Create Release
 
 on:
-  release:
-    types: [created]
-  workflow_dispatch:
+  push:
+    tags:
+      - 'tag3'
 
 jobs:
-  deploy:
+  create_release:
+    name: Create Release
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Determine tag from release
-        id: determine_tag
-        run: echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
-
-      - name: Deploy files based on tag
-        run: |
-          if [[ ${{ steps.determine_tag.outputs.tag }} == 'tag3' ]]; then
-            cp file3.txt deployed_file.txt
-          elif [[ ${{ steps.determine_tag.outputs.tag }} == 'tag1' ]]; then
-            cp file1.txt deployed_file.txt
-          fi
-          
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release with Tag 3
+          body: |
+            This release is created using tag3.
+          draft: false
+          prerelease: false
