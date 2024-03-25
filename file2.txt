@@ -1,0 +1,1 @@
+echo "This is file2 for tag2" > file2.txt
