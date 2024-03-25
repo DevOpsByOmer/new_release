@@ -1,0 +1,26 @@
+name: Deploy Files
+
+on:
+  release:
+    types: [created]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Determine tag from release
+        id: determine_tag
+        run: echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
+
+      - name: Deploy files based on tag
+        run: |
+          if [[ ${{ steps.determine_tag.outputs.tag }} == 'tag3' ]]; then
+            cp file3.txt deployed_file.txt
+          elif [[ ${{ steps.determine_tag.outputs.tag }} == 'tag1' ]]; then
+            cp file1.txt deployed_file.txt
+          fi
+          
