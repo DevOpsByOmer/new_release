@@ -1,0 +1,35 @@
+name: Release Deployment
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check if release is tagged
+      id: check_tag
+      run: echo "Release tag: ${{ github.event.release.tag_name }}"
+      
+    - name: Determine artifact to deploy
+      id: determine_artifact
+      run: |
+        if [ "${{ steps.check_tag.outputs.tag_name }}" == "tag1" ]; then
+          echo "::set-output name=artifact::file1.txt"
+        elif [ "${{ steps.check_tag.outputs.tag_name }}" == "tag2" ]; then
+          echo "::set-output name=artifact::file2.txt"
+        elif [ "${{ steps.check_tag.outputs.tag_name }}" == "tag3" ]; then
+          echo "::set-output name=artifact::file3.txt"
+        else
+          echo "No artifact found for the release tag."
+          exit 1
+        fi
+
+    - name: Deploy Artifact
+      run: |
+        artifact="${{ steps.determine_artifact.outputs.artifact }}"
+        echo "Deploying $artifact"
+        # Replace `your_command_here` with the appropriate command to copy the artifact to the deployment target
+        cp "$artifact" /path/to/deployment/target

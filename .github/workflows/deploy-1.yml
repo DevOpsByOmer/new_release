@@ -1,0 +1,20 @@
+name: Attach File to Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  attach_file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Attach file to release with tag3
+        id: attach_file
+        uses: actions/upload-artifact@v2
+        with:
+          name: deployed_file
+          path: path/to/deployed_file.txt
+        if: ${{ github.event.release.tag_name == 'tag3' }}
